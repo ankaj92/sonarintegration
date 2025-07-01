@@ -1,0 +1,33 @@
+plugins {
+    id 'java'
+    id 'org.sonarqube' version '4.3.0.3225'
+    id 'jacoco'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+    implementation 'mysql:mysql-connector-java:8.0.33'
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "my-java-project"
+        property "sonar.host.url", "http://localhost:9000"
+        property "sonar.login", "squ_fd64a3d57b0d5812f8667c83c3234200ee56854e"
+    }
+}
+
+jacocoTestReport {
+    reports {
+        xml.required = true
+        html.required = true
+    }
+}
+
+tasks.test {
+    useJUnitPlatform()
+}
