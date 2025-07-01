@@ -33,24 +33,28 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      # Step 4: Build the project
+      # Step 4: Grant execute permissions to gradlew
+      - name: Grant execute permissions for gradlew
+        run: chmod +x ./gradlew
+
+      # Step 5: Build the project
       - name: Build with Gradle
         run: ./gradlew clean build
 
-      # Step 5: Run tests and generate coverage report
+      # Step 6: Run tests and generate coverage report
       - name: Run tests and generate coverage
         run: ./gradlew test jacocoTestReport
 
-      # Step 6: Upload coverage report as an artifact
+      # Step 7: Upload coverage report as an artifact
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
           path: build/reports/jacoco/test/html
 
-      # Step 7: Run SonarQube scan
+      # Step 8: Run SonarQube scan
       - name: SonarQube Scan
         env:
           SONAR_HOST_URL: http://localhost:9000
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_TOKEN: squ_fd64a3d57b0d5812f8667c83c3234200ee56854e
         run: ./gradlew sonarqube
